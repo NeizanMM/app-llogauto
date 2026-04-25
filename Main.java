@@ -3,91 +3,119 @@ package com.llogaauto;
 import java.util.Scanner;
 
 /**
- * Programa principal - A5.2
- * Menú interactiu per gestionar automòbils
+ * Main - A5.3
+ * Prova cotxe1 (constructor normal), cotxe2 (constructor buit),
+ * camió, i menú interactiu del gestor
  */
 public class Main {
 
     public static void main(String[] args) {
 
-        // ── Punt 3: Crear les 3 instàncies amb constructor buit + setters ──
-        Automobil auto1 = new Automobil();
-        auto1.setMarca("Porche");
-        auto1.setModel("Cayene");
-        auto1.setMatricula("2323ABC");
+        System.out.println("══════════════════════════════════════════════");
+        System.out.println("  Punt 3d - Proves de la classe Cotxe");
+        System.out.println("══════════════════════════════════════════════");
 
-        Automobil auto2 = new Automobil();
-        auto2.setMarca("Mercedes");
-        auto2.setModel("CLA");
-        auto2.setMatricula("1234ABC");
+        // i. cotxe1 amb constructor normal
+        Cotxe cotxe1 = new Cotxe("Toyota", "Corolla", "1234LMN",
+                                  TipusCombustible.BENZINA_95, 4);
+        System.out.println("cotxe1: " + cotxe1.mostrarDades());
 
-        Automobil auto3 = new Automobil();
-        auto3.setMarca("VW");
-        auto3.setModel("Golf");
-        auto3.setMatricula("2222ABC");
+        // ii. cotxe2 amb constructor per defecte + setters
+        Cotxe cotxe2 = new Cotxe();
+        cotxe2.setMarca("Honda");
+        cotxe2.setModel("Civic");
+        cotxe2.setMatricula("5678BCD");
+        cotxe2.setCombustible(TipusCombustible.HIBRID);
+        cotxe2.setNumPortes(5);
+        System.out.println("cotxe2: " + cotxe2.mostrarDades());
 
-        // Imprimir valors de les instàncies
-        System.out.println("── Instàncies creades ──");
-        System.out.println(auto1.mostrarDades());
-        System.out.println(auto2.mostrarDades());
-        System.out.println(auto3.mostrarDades());
-        System.out.println("Total vehicles creats (comptador): " + Automobil.getComptador());
+        // Punt 5 - Camió
+        System.out.println("\n══════════════════════════════════════════════");
+        System.out.println("  Punt 5 - Prova de la classe Camio");
+        System.out.println("══════════════════════════════════════════════");
 
-        // ── Punt 4 i 5: GestorAutomobils amb menú ──
+        Camio camio1 = new Camio("Volvo", "FH16", "9999BCD",
+                                  TipusCombustible.DIESEL, 8.5f, 26.0f);
+        System.out.println("camio1: " + camio1.mostrarDades());
+
+        Camio camio2 = new Camio();
+        camio2.setMarca("MAN");
+        camio2.setModel("TGX");
+        camio2.setMatricula("1111FGH");
+        camio2.setCombustible(TipusCombustible.DIESEL);
+        camio2.setTara(7.2f);
+        camio2.setPesMaxim(20.0f);
+        System.out.println("camio2: " + camio2.mostrarDades());
+
+        System.out.println("\nTotal vehicles creats (comptador): " + Automobil.getComptador());
+
+        // Menú interactiu
         GestorAutomobils gestor = new GestorAutomobils(10);
         Scanner sc = new Scanner(System.in);
         int opcio;
 
         do {
-            System.out.println("\n╔══════════════════════════╗");
-            System.out.println("║   LlogaAuto S.L. - Menú  ║");
-            System.out.println("╠══════════════════════════╣");
-            System.out.println("║  1 - Introduir dades     ║");
-            System.out.println("║  2 - Llistar automòbils  ║");
-            System.out.println("║  3 - Sortir              ║");
-            System.out.println("╚══════════════════════════╝");
+            System.out.println("\n╔════════════════════════════════╗");
+            System.out.println("║    LlogaAuto S.L. - Menú       ║");
+            System.out.println("╠════════════════════════════════╣");
+            System.out.println("║  1 - Afegir cotxe              ║");
+            System.out.println("║  2 - Afegir camió              ║");
+            System.out.println("║  3 - Llistar vehicles          ║");
+            System.out.println("║  4 - Sortir                    ║");
+            System.out.println("╚════════════════════════════════╝");
             System.out.print("Opció: ");
             opcio = sc.nextInt();
-            sc.nextLine(); // netejar buffer
+            sc.nextLine();
 
             switch (opcio) {
-                case 1:
-                    System.out.print("Posició a la llista (0-9): ");
-                    int pos = sc.nextInt();
-                    sc.nextLine();
-
-                    System.out.print("Marca: ");
-                    String marca = sc.nextLine();
-
-                    System.out.print("Model: ");
-                    String model = sc.nextLine();
-
-                    String matricula;
+                case 1: {
+                    System.out.print("Posició (0-9): ");
+                    int pos = sc.nextInt(); sc.nextLine();
+                    System.out.print("Marca: ");     String marca = sc.nextLine();
+                    System.out.print("Model: ");     String model = sc.nextLine();
+                    String mat;
                     do {
-                        System.out.print("Matrícula (format 1234XYZ): ");
-                        matricula = sc.nextLine().toUpperCase();
-                        if (!Automobil.validarMatricula(matricula)) {
-                            System.out.println("  ✗ Matrícula invàlida. Torna-ho a intentar.");
-                        }
-                    } while (!Automobil.validarMatricula(matricula));
-
-                    Automobil nouAuto = new Automobil(marca, model, matricula);
-                    gestor.afegirAutomobil(pos, nouAuto);
+                        System.out.print("Matrícula (1234XYZ): ");
+                        mat = sc.nextLine().toUpperCase();
+                        if (!Automobil.validarMatricula(mat))
+                            System.out.println("  ✗ Matrícula invàlida.");
+                    } while (!Automobil.validarMatricula(mat));
+                    System.out.println("Combustible (BENZINA_95/BENZINA_98/DIESEL/ELECTRIC/HIBRID): ");
+                    TipusCombustible combu = TipusCombustible.valueOf(sc.nextLine().toUpperCase());
+                    System.out.print("Num portes: ");
+                    int portes = sc.nextInt(); sc.nextLine();
+                    gestor.afegirAutomobil(pos, new Cotxe(marca, model, mat, combu, portes));
                     break;
-
-                case 2:
+                }
+                case 2: {
+                    System.out.print("Posició (0-9): ");
+                    int pos = sc.nextInt(); sc.nextLine();
+                    System.out.print("Marca: ");     String marca = sc.nextLine();
+                    System.out.print("Model: ");     String model = sc.nextLine();
+                    String mat;
+                    do {
+                        System.out.print("Matrícula (1234XYZ): ");
+                        mat = sc.nextLine().toUpperCase();
+                        if (!Automobil.validarMatricula(mat))
+                            System.out.println("  ✗ Matrícula invàlida.");
+                    } while (!Automobil.validarMatricula(mat));
+                    System.out.println("Combustible (BENZINA_95/BENZINA_98/DIESEL/ELECTRIC/HIBRID): ");
+                    TipusCombustible combu = TipusCombustible.valueOf(sc.nextLine().toUpperCase());
+                    System.out.print("Tara (t): ");  float tara = sc.nextFloat();
+                    System.out.print("Pes màx (t): "); float pes = sc.nextFloat(); sc.nextLine();
+                    gestor.afegirAutomobil(pos, new Camio(marca, model, mat, combu, tara, pes));
+                    break;
+                }
+                case 3:
                     gestor.llistarAutomobils();
                     break;
-
-                case 3:
+                case 4:
                     System.out.println("Fins aviat!");
                     break;
-
                 default:
                     System.out.println("Opció no vàlida.");
             }
-
-        } while (opcio != 3);
+        } while (opcio != 4);
 
         sc.close();
     }

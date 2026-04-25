@@ -1,72 +1,62 @@
 package com.llogaauto;
 
 /**
- * Classe Automobil - A5.2 Diagrames de classes
- * Atributs privats + getters/setters + comptador static
+ * Classe abstracta Automobil - A5.3
+ * No es pot instanciar directament: cal usar Cotxe o Camio
  */
-public class Automobil {
+public abstract class Automobil {
 
     // Atributs privats
     private String marca;
     private String model;
     private String matricula;
-    private static int comptador = 0; // static: compartit per totes les instàncies
+    private TipusCombustible combustible;
+    private static int comptador = 0;
 
     // Constructor amb paràmetres
-    public Automobil(String marca, String model, String matricula) {
+    public Automobil(String marca, String model, String matricula, TipusCombustible combustible) {
         this.marca = marca;
         this.model = model;
         this.matricula = matricula;
+        this.combustible = combustible;
         comptador++;
     }
 
-    // Constructor sense paràmetres (requerit per l'activitat)
+    // Constructor sense paràmetres
     public Automobil() {
         comptador++;
     }
 
     // ── GETTERS ──────────────────────────────────────────
 
-    public String getMarca() {
-        return marca;
-    }
-
-    public String getModel() {
-        return model;
-    }
-
-    public String getMatricula() {
-        return matricula;
-    }
-
-    public static int getComptador() {
-        return comptador;
-    }
+    public String getMarca()               { return marca; }
+    public String getModel()               { return model; }
+    public String getMatricula()           { return matricula; }
+    public TipusCombustible getCombustible() { return combustible; }
+    public static int getComptador()       { return comptador; }
 
     // ── SETTERS ──────────────────────────────────────────
 
-    public void setMarca(String marca) {
-        this.marca = marca;
-    }
-
-    public void setModel(String model) {
-        this.model = model;
-    }
-
-    public void setMatricula(String matricula) {
-        this.matricula = matricula;
-    }
+    public void setMarca(String marca)                     { this.marca = marca; }
+    public void setModel(String model)                     { this.model = model; }
+    public void setMatricula(String matricula)             { this.matricula = matricula; }
+    public void setCombustible(TipusCombustible combustible) { this.combustible = combustible; }
 
     // ── MÈTODES ──────────────────────────────────────────
 
+    /**
+     * mostrarDades és sobrecarregat per Cotxe i Camio (polimorfisme)
+     */
     public String mostrarDades() {
-        return "Marca: " + marca + " | Model: " + model + " | Matrícula: " + matricula;
+        String combu = (combustible != null)
+            ? combustible.name() + " (" + combustible.getPreu() + "€/u)"
+            : "no especificat";
+        return "Marca: " + marca +
+               " | Model: " + model +
+               " | Matrícula: " + matricula +
+               " | Combustible: " + combu;
     }
 
-    /**
-     * Valida que la matrícula espanyola tingui format: 4 dígits + 3 consonants
-     * Lletres no permeses: vocals (A,E,I,O,U), Ñ, Q
-     */
     public static boolean validarMatricula(String matricula) {
         if (matricula == null || matricula.length() != 7) return false;
         String noPermeses = "AEIOUÑQ";
